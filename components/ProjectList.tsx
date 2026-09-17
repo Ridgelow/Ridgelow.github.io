@@ -10,7 +10,10 @@ import Reveal from "./hud/Reveal";
 export default function ProjectList() {
   const trackRef = useRef<HTMLDivElement>(null);
   const [index, setIndex] = useState(0);
+  const [hovered, setHovered] = useState<number | null>(null);
   const total = projects.length;
+  // Exactly one colored: the hovered card, or the centered carousel card.
+  const lit = hovered ?? index;
 
   const syncIndex = useCallback(() => {
     const el = trackRef.current;
@@ -95,12 +98,16 @@ export default function ProjectList() {
             style={{ scrollPaddingInline: "1.5rem" }}
           >
             {projects.map((p, i) => {
-              const active = i === index;
+              const active = i === lit;
               return (
               <Link
                 key={p.slug}
                 data-project-card
                 href={`/work/${p.slug}`}
+                onMouseEnter={() => setHovered(i)}
+                onMouseLeave={() => setHovered(null)}
+                onFocus={() => setHovered(i)}
+                onBlur={() => setHovered(null)}
                 className="group flex w-[min(85vw,420px)] shrink-0 snap-center flex-col overflow-hidden border border-bo-rule bg-bo-ash/70 shadow-edge transition-[box-shadow,border-color,background-color,opacity] duration-300 ease-out hover:border-bo-ghost hover:bg-bo-ash hover:shadow-glitch md:w-[min(70vw,520px)] lg:snap-start"
               >
                 <div className="relative aspect-[16/10] w-full overflow-hidden border-b border-bo-rule bg-bo-coal">

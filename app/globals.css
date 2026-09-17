@@ -213,32 +213,27 @@ html.resume-open * {
   animation: scan-sweep 2400ms linear infinite;
 }
 
-/* Chromatic tear — idle glitch every ~6s with cool grey fringing */
+/* Chromatic tear — idle glitch every ~6s with cool grey fringing (no clip-path; Safari-safe) */
 @keyframes glitch-tear {
   0%,
   3%,
   100% {
-    clip-path: inset(0 0 0 0);
     transform: none;
     text-shadow: none;
   }
   4% {
-    clip-path: inset(12% 0 68% 0);
-    transform: translate(-4px, 0);
+    transform: translate(-3px, 0);
     text-shadow: 4px 0 #7a7a86, -4px 0 #c8c8d2, 0 0 12px rgba(154, 154, 168, 0.35);
   }
   6% {
-    clip-path: inset(48% 0 22% 0);
-    transform: translate(4px, 0);
+    transform: translate(3px, 0);
     text-shadow: -3px 0 #6b6b78, 5px 0 #b8b8c4, 0 0 10px rgba(140, 140, 155, 0.3);
   }
   8% {
-    clip-path: inset(28% 0 45% 0);
     transform: translate(-2px, 1px);
     text-shadow: 3px 0 #8e8e9a, -5px 0 #d0d0d8;
   }
   10% {
-    clip-path: inset(0 0 0 0);
     transform: none;
     text-shadow: none;
   }

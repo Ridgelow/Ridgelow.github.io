@@ -92,7 +92,7 @@ export default function ResumePanel({ open, onClose }: Props) {
             <div className="flex h-full flex-col items-center justify-center gap-6 px-6 text-center">
               <div className="flex flex-col gap-2">
                 <span className="font-mono text-xs tracking-[.14em] text-bo-steel">
-                  // RESUME
+                  {"// RESUME"}
                 </span>
                 <p className="max-w-xs font-mono text-sm leading-relaxed text-bo-chalk">
                   Mobile browsers can&apos;t embed PDFs here. Open it in Safari&apos;s

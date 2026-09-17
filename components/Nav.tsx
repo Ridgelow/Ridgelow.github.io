@@ -4,11 +4,11 @@ import { useState } from "react";
 import Logo from "./Logo";
 
 const LINKS = [
-  { label: "profile", href: "#profile" },
-  { label: "work", href: "#work" },
-  { label: "skills", href: "#skills" },
-  { label: "writing", href: "#writing" },
-  { label: "contact", href: "#contact" },
+  { label: "profile", href: "/#profile" },
+  { label: "work", href: "/#work" },
+  { label: "skills", href: "/#skills" },
+  { label: "writing", href: "/#writing" },
+  { label: "contact", href: "/#contact" },
 ];
 
 export default function Nav() {

@@ -12,17 +12,22 @@ const BOOT = [
 export default function Hero() {
   const [phase, setPhase] = useState(0);
   const [hex, setHex] = useState("0000");
-  const showTitle = phase >= BOOT.length;
+  const bootDone = phase >= BOOT.length;
 
   useEffect(() => {
-    if (!showTitle) return;
+    const t = window.setTimeout(() => setPhase(BOOT.length), 4000);
+    return () => window.clearTimeout(t);
+  }, []);
+
+  useEffect(() => {
+    if (!bootDone) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) return;
     const id = window.setInterval(() => {
       setHex(Math.floor(Math.random() * 0xffff).toString(16).padStart(4, "0"));
     }, 4200);
     return () => window.clearInterval(id);
-  }, [showTitle]);
+  }, [bootDone]);
 
   return (
     <section className="border-b border-bo-rule px-6 py-10 lg:px-10 lg:py-14">
@@ -37,10 +42,14 @@ export default function Hero() {
               showCaret={phase === i}
               onDone={() => setPhase((p) => Math.max(p, i + 1))}
             />
-          ) : null
+          ) : (
+            <span key={line.text} className={`invisible font-mono text-xs ${line.className}`}>
+              {line.text}
+            </span>
+          )
         )}
 
-        {showTitle && (
+        {bootDone && (
           <span className="inline-flex items-baseline font-mono text-xs text-bo-steel">
             <span className="whitespace-pre">sys // idle 0x{hex}</span>
             <span
@@ -50,16 +59,11 @@ export default function Hero() {
           </span>
         )}
 
-        {showTitle && (
-          <div className="mt-6 flex flex-col gap-3 animate-hard-in">
-            <h1 className="font-sans text-3xl font-medium leading-tight tracking-tight text-bo-white animate-glitch md:text-[40px] md:leading-[1.15]">
-              Hey, I&apos;m Hasnain!
-            </h1>
-            <p className="max-w-2xl font-sans text-lg leading-snug text-bo-smoke md:text-xl">
-              Building full-stack and AI products that ship.
-            </p>
-          </div>
-        )}
+        <div className={`mt-6 ${bootDone ? "animate-hard-in" : ""}`}>
+          <h1 className="max-w-3xl font-sans text-3xl font-medium leading-tight tracking-tight text-bo-white animate-glitch md:text-[40px] md:leading-[1.15]">
+            Hey, I&apos;m Hasnain — Building full-stack products at the edge of AI, security, and policy.
+          </h1>
+        </div>
       </div>
     </section>
   );

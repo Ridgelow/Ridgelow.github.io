@@ -15,7 +15,7 @@
     background-attachment: fixed;
   }
   a {
-    @apply text-bo-chalk;
+    @apply text-bo-chalk transition-colors duration-200;
   }
   a:hover {
     @apply text-bo-white;
@@ -76,13 +76,13 @@
   background-size: auto, 40px 40px, 40px 40px, 100% 100%;
 }
 
-/* Custom HUD cursor — hide OS cursor on capable desktops */
+/* HUD cursor — hide OS cursor on capable desktops */
 html.hud-cursor,
 html.hud-cursor * {
   cursor: none !important;
 }
 
-/* Hide floating HUD cursor while resume panel is open */
+/* Hide floating cursor while resume panel is open */
 html.resume-open #hud-cursor {
   display: none !important;
 }
@@ -93,7 +93,7 @@ html.resume-open * {
 
 .magnetic-card {
   transform-style: preserve-3d;
-  transition: transform 80ms linear;
+  transition: transform 160ms cubic-bezier(0.22, 1, 0.36, 1);
   will-change: transform;
 }
 
@@ -335,7 +335,7 @@ html.resume-open * {
 @keyframes hard-in {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(16px);
   }
   to {
     opacity: 1;
@@ -343,7 +343,7 @@ html.resume-open * {
   }
 }
 .animate-hard-in {
-  animation: hard-in 200ms steps(4) both;
+  animation: hard-in 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 /* Nav link underline draw */
@@ -353,6 +353,7 @@ html.resume-open * {
 }
 .nav-link {
   position: relative;
+  transition: color 200ms ease;
 }
 .nav-link::after {
   content: "";

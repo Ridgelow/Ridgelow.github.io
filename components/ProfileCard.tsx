@@ -6,12 +6,12 @@ export default function ProfileCard() {
     <section id="profile" className="border-b border-bo-rule px-6 py-10 lg:px-10">
       <SectionHeader command="$ cat profile.txt" hint="// PROFILE" />
       <div className="flex flex-col gap-6 md:flex-row md:items-start md:gap-8">
-        <div className="relative mx-auto aspect-[3/4] w-[180px] shrink-0 overflow-hidden border border-bo-rule bg-bo-graphite md:mx-0 md:w-[200px]">
+        <div className="group relative mx-auto aspect-[3/4] w-[180px] shrink-0 overflow-hidden border border-bo-rule bg-bo-graphite md:mx-0 md:w-[200px]">
           <Image
             src="/headshot.png"
             alt="Hasnain Rizvi"
             fill
-            className="object-cover object-[center_18%] grayscale contrast-[1.15] brightness-[0.92]"
+            className="object-cover object-[center_18%] grayscale contrast-[1.15] brightness-[0.92] transition-[filter] duration-500 ease-out group-hover:grayscale-[0.35] group-hover:brightness-100"
             sizes="200px"
             priority
           />

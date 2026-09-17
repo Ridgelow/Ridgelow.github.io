@@ -7,7 +7,7 @@ const AI = ["LLM APIs", "RAG", "Agentic AI", "Tool Calling", "MCP", "OAuth 2.0"]
 
 function Chip({ children }: { children: string }) {
   return (
-    <span className="inline-block border border-bo-rule bg-bo-coal px-3 py-2 font-mono text-sm text-bo-chalk hover:border-bo-ghost hover:text-bo-white">
+    <span className="inline-block border border-bo-rule bg-bo-coal px-3 py-2 font-mono text-sm text-bo-chalk transition-[border-color,color,background-color] duration-200 hover:border-bo-ghost hover:text-bo-white">
       {children}
     </span>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 
 type Props = {
@@ -10,9 +10,15 @@ type Props = {
 
 export default function ResumePanel({ open, onClose }: Props) {
   const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    const mq = window.matchMedia("(max-width: 640px)");
+    const sync = () => setIsMobile(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
   }, []);
 
   useEffect(() => {
@@ -20,27 +26,46 @@ export default function ResumePanel({ open, onClose }: Props) {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
-    const prev = document.body.style.overflow;
+    const prevOverflow = document.body.style.overflow;
+    const prevTouch = document.body.style.touchAction;
     document.body.style.overflow = "hidden";
+    document.body.style.touchAction = "none";
     document.documentElement.classList.add("resume-open");
     window.addEventListener("keydown", onKey);
     return () => {
-      document.body.style.overflow = prev;
+      document.body.style.overflow = prevOverflow;
+      document.body.style.touchAction = prevTouch;
       document.documentElement.classList.remove("resume-open");
       window.removeEventListener("keydown", onKey);
     };
   }, [open, onClose]);
 
+  const pdfSrc = useMemo(() => {
+    if (typeof window === "undefined") return "/resume.pdf";
+    // Mobile browsers often ignore FitH and open PDFs huge in iframes.
+    // Google's embedded viewer scales to width when the PDF is publicly reachable.
+    if (isMobile) {
+      const host = window.location.hostname;
+      const isLocal = host === "localhost" || host === "127.0.0.1";
+      if (isLocal) {
+        return "/resume.pdf#toolbar=0&navpanes=0&view=FitW";
+      }
+      const absolute = `${window.location.origin}/resume.pdf`;
+      return `https://docs.google.com/gview?embedded=1&url=${encodeURIComponent(absolute)}`;
+    }
+    return "/resume.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH";
+  }, [isMobile]);
+
   if (!open || !mounted) return null;
 
   return createPortal(
     <div
-      className="fixed inset-0 z-[200] flex items-end justify-center sm:items-center"
+      className="fixed inset-0 z-[200] flex items-stretch justify-center sm:items-center sm:p-3"
       style={{
-        paddingTop: "max(0.75rem, env(safe-area-inset-top))",
-        paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))",
-        paddingLeft: "max(0.75rem, env(safe-area-inset-left))",
-        paddingRight: "max(0.75rem, env(safe-area-inset-right))",
+        paddingTop: "env(safe-area-inset-top)",
+        paddingBottom: "env(safe-area-inset-bottom)",
+        paddingLeft: "env(safe-area-inset-left)",
+        paddingRight: "env(safe-area-inset-right)",
       }}
       role="dialog"
       aria-modal="true"
@@ -54,12 +79,19 @@ export default function ResumePanel({ open, onClose }: Props) {
       />
 
       <div
-        className="relative z-10 flex w-full max-w-4xl flex-col overflow-hidden border border-bo-rule bg-bo-coal shadow-edge"
-        style={{ maxHeight: "calc(100dvh - 1.5rem)" }}
+        className="relative z-10 flex h-[100dvh] w-full max-w-4xl flex-col overflow-hidden border-0 bg-bo-coal sm:h-[min(92dvh,900px)] sm:border sm:border-bo-rule"
       >
-        <div className="sticky top-0 z-20 flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-bo-rule bg-bo-coal px-3 py-3 sm:px-5">
+        <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-bo-rule bg-bo-coal px-3 py-3 sm:px-5">
           <span className="font-mono text-xs text-bo-white sm:text-sm">$ view resume.pdf</span>
           <div className="flex items-center gap-2">
+            <a
+              href="/resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="border border-bo-rule px-3 py-2 font-mono text-xs tracking-[.12em] text-bo-chalk hover:border-bo-white hover:text-bo-white sm:hidden"
+            >
+              Open ↗
+            </a>
             <a
               href="/resume.pdf"
               download="Hasnain_Rizvi_Resume.pdf"
@@ -77,16 +109,18 @@ export default function ResumePanel({ open, onClose }: Props) {
           </div>
         </div>
 
-        <div className="min-h-0 flex-1 overflow-auto bg-bo-ash" style={{ minHeight: "40vh" }}>
+        <div className="relative min-h-0 flex-1 overflow-hidden bg-bo-ash">
           <iframe
-            src="/resume.pdf#toolbar=0&navpanes=0&view=FitH"
+            key={pdfSrc}
+            src={pdfSrc}
             title="Resume PDF"
-            className="h-full min-h-[60vh] w-full border-0 sm:min-h-[70vh]"
+            className="h-full w-full border-0"
           />
         </div>
 
-        <div className="sticky bottom-0 z-20 flex shrink-0 items-center justify-between gap-3 border-t border-bo-rule bg-bo-coal px-3 py-3 sm:px-5">
-          <span className="font-mono text-xs text-bo-steel">esc to close</span>
+        <div className="flex shrink-0 items-center justify-between gap-3 border-t border-bo-rule bg-bo-coal px-3 py-3 sm:px-5">
+          <span className="hidden font-mono text-xs text-bo-steel sm:inline">esc to close</span>
+          <span className="font-mono text-xs text-bo-steel sm:hidden">pinch to zoom · open for native view</span>
           <a
             href="/resume.pdf"
             download="Hasnain_Rizvi_Resume.pdf"

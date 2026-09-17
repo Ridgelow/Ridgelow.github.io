@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-/** Hard snap-in when scrolled into view — mechanical, stepped. */
+/** Smooth rise-in when scrolled into view. Visible by default if IO never fires. */
 export default function Reveal({
   children,
   className = "",
@@ -18,23 +18,46 @@ export default function Reveal({
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      setShow(true);
+      return;
+    }
+
+    let done = false;
+    const reveal = () => {
+      if (done) return;
+      done = true;
+      window.setTimeout(() => setShow(true), delayMs);
+    };
+
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          window.setTimeout(() => setShow(true), delayMs);
+          reveal();
           io.disconnect();
         }
       },
-      { threshold: 0.15 }
+      { threshold: 0.08, rootMargin: "0px 0px -40px 0px" }
     );
     io.observe(el);
-    return () => io.disconnect();
+
+    // Fallback: never leave content invisible (IO edge cases / no-JS hydration delay)
+    const fallback = window.setTimeout(reveal, 1200 + delayMs);
+
+    return () => {
+      io.disconnect();
+      window.clearTimeout(fallback);
+    };
   }, [delayMs]);
 
   return (
     <div
       ref={ref}
-      className={`${className} ${show ? "animate-hard-in" : "opacity-0"} h-full`}
+      className={`transition-[opacity,transform] duration-500 ease-out motion-reduce:transition-none ${
+        show ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0"
+      } ${className}`}
     >
       {children}
     </div>

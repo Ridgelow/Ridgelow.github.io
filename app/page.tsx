@@ -19,20 +19,20 @@ export default function Home() {
       <Nav />
       <main className="relative z-10 mx-auto w-full max-w-[1100px]">
         <Hero />
-        <Reveal delayMs={40}>
+        <Reveal delayMs={80}>
           <ProfileCard />
         </Reveal>
         <ProjectList />
-        <Reveal delayMs={60}>
+        <Reveal delayMs={100}>
           <Skills />
         </Reveal>
-        <Reveal delayMs={80}>
+        <Reveal delayMs={120}>
           <WritingList />
         </Reveal>
-        <Reveal delayMs={60}>
+        <Reveal delayMs={100}>
           <ResumeRow />
         </Reveal>
-        <Reveal delayMs={60}>
+        <Reveal delayMs={100}>
           <ContactLinks />
         </Reveal>
         <Footer />

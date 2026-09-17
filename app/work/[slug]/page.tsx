@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
@@ -48,10 +49,15 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
 
         <Reveal>
           <div className="border-b border-bo-rule px-6 py-8 lg:px-10">
-            <div className="flex h-[240px] items-center justify-center border border-bo-rule bg-bo-ash md:h-[360px]">
-              <span className="font-mono text-xs tracking-[.14em] text-bo-steel">
-                [ screenshot ]
-              </span>
+            <div className="relative aspect-[16/10] w-full overflow-hidden border border-bo-rule bg-bo-coal">
+              <Image
+                src={project.image}
+                alt={project.imageAlt}
+                fill
+                className="object-cover object-top"
+                sizes="(max-width: 1100px) 100vw, 1100px"
+                priority
+              />
             </div>
           </div>
         </Reveal>

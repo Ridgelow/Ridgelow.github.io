@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import Image from "next/image";
 
 type Props = {
   open: boolean;
@@ -9,6 +10,7 @@ type Props = {
 };
 
 const PDF = "/resume.pdf";
+const PREVIEW = "/resume-preview.jpg";
 
 export default function ResumePanel({ open, onClose }: Props) {
   const [mounted, setMounted] = useState(false);
@@ -70,6 +72,14 @@ export default function ResumePanel({ open, onClose }: Props) {
           <div className="flex items-center gap-2">
             <a
               href={PDF}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="border border-bo-rule px-3 py-2 font-mono text-xs tracking-[.12em] text-bo-chalk hover:border-bo-white hover:text-bo-white sm:hidden"
+            >
+              Open ↗
+            </a>
+            <a
+              href={PDF}
               download="Hasnain_Rizvi_Resume.pdf"
               className="border border-bo-white bg-bo-white px-3 py-2 font-mono text-xs tracking-[.12em] text-bo-black hover:bg-bo-chalk"
             >
@@ -87,33 +97,17 @@ export default function ResumePanel({ open, onClose }: Props) {
 
         <div className="relative min-h-0 flex-1 overflow-hidden bg-bo-ash">
           {isMobile ? (
-            // Safari / mobile Chromium blank or black-out PDF iframes.
-            // Open natively instead — Safari's PDF viewer works.
-            <div className="flex h-full flex-col items-center justify-center gap-6 px-6 text-center">
-              <div className="flex flex-col gap-2">
-                <span className="font-mono text-xs tracking-[.14em] text-bo-steel">
-                  {"// RESUME"}
-                </span>
-                <p className="max-w-xs font-mono text-sm leading-relaxed text-bo-chalk">
-                  Mobile browsers can&apos;t embed PDFs here. Open it in Safari&apos;s
-                  native viewer.
-                </p>
-              </div>
-              <a
-                href={PDF}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="border border-bo-white bg-bo-white px-6 py-4 font-mono text-xs tracking-[.14em] text-bo-black"
-              >
-                Open resume.pdf →
-              </a>
-              <a
-                href={PDF}
-                download="Hasnain_Rizvi_Resume.pdf"
-                className="font-mono text-xs tracking-[.12em] text-bo-smoke underline"
-              >
-                or download ↓
-              </a>
+            // Safari blanks / over-zooms PDF iframes. Show a fit-width page image instead.
+            <div className="h-full overflow-y-auto overscroll-contain bg-bo-ash px-2 py-3">
+              <Image
+                src={PREVIEW}
+                alt="Hasnain Rizvi resume"
+                width={1530}
+                height={1980}
+                className="mx-auto h-auto w-full max-w-full border border-bo-rule bg-white"
+                sizes="100vw"
+                priority
+              />
             </div>
           ) : (
             <iframe
@@ -126,7 +120,7 @@ export default function ResumePanel({ open, onClose }: Props) {
 
         <div className="flex shrink-0 items-center justify-between gap-3 border-t border-bo-rule bg-bo-coal px-3 py-3 sm:px-5">
           <span className="hidden font-mono text-xs text-bo-steel sm:inline">esc to close</span>
-          <span className="font-mono text-xs text-bo-steel sm:hidden">opens in Safari PDF viewer</span>
+          <span className="font-mono text-xs text-bo-steel sm:hidden">scroll to read · open for PDF</span>
           <a
             href={PDF}
             download="Hasnain_Rizvi_Resume.pdf"

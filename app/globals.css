@@ -1,0 +1,398 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-bo-black text-bo-chalk font-sans;
+    background-image:
+      radial-gradient(ellipse 90% 55% at 50% -10%, rgba(255, 255, 255, 0.045), transparent 55%),
+      radial-gradient(ellipse 70% 40% at 100% 100%, rgba(255, 255, 255, 0.025), transparent 50%),
+      linear-gradient(180deg, #000000 0%, #060608 50%, #000000 100%);
+    background-attachment: fixed;
+  }
+  a {
+    @apply text-bo-chalk;
+  }
+  a:hover {
+    @apply text-bo-white;
+  }
+  ::selection {
+    background: #ffffff;
+    color: #000000;
+  }
+}
+
+/* HUD texture — visible grid + grain + vignette */
+.site-texture {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(46, 46, 52, 0.45) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(46, 46, 52, 0.45) 1px, transparent 1px),
+    radial-gradient(ellipse at center, transparent 35%, rgba(0, 0, 0, 0.65) 100%);
+  background-size: 40px 40px, 40px 40px, 100% 100%;
+  opacity: 0.7;
+}
+.site-texture::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.14;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+  mix-blend-mode: overlay;
+}
+.site-texture::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.25;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.18) 2px,
+    rgba(0, 0, 0, 0.18) 3px
+  );
+}
+
+/* Cursor spotlight — brightens grid under pointer */
+.site-texture-reactive {
+  background-image:
+    radial-gradient(
+      420px circle at var(--gx, 50%) var(--gy, 40%),
+      rgba(255, 255, 255, 0.09),
+      transparent 55%
+    ),
+    linear-gradient(rgba(46, 46, 52, 0.45) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(46, 46, 52, 0.45) 1px, transparent 1px),
+    radial-gradient(ellipse at center, transparent 35%, rgba(0, 0, 0, 0.65) 100%);
+  background-size: auto, 40px 40px, 40px 40px, 100% 100%;
+}
+
+/* Custom HUD cursor — hide OS cursor on capable desktops */
+html.hud-cursor,
+html.hud-cursor * {
+  cursor: none !important;
+}
+
+.magnetic-card {
+  transform-style: preserve-3d;
+  transition: transform 80ms linear;
+  will-change: transform;
+}
+
+/* Drifting grain / soft texture pulse after load */
+.site-texture-live::before {
+  animation: grain-shift 2.4s steps(4) infinite;
+}
+@keyframes grain-shift {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-1%, 1%); }
+  50% { transform: translate(1%, -1%); }
+  75% { transform: translate(-1%, -1%); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes signal-blink {
+  0%,
+  100% { opacity: 1; }
+  50% { opacity: 0.15; }
+}
+.animate-signal {
+  animation: signal-blink 1.4s steps(1) infinite;
+}
+
+@keyframes flicker-dim {
+  0%,
+  92%,
+  100% { opacity: 1; }
+  93% { opacity: 0.35; }
+  94% { opacity: 1; }
+  96% { opacity: 0.5; }
+  97% { opacity: 1; }
+}
+.animate-flicker {
+  animation: flicker-dim 5.5s steps(1) infinite;
+}
+
+@keyframes edge-flicker {
+  0%,
+  88%,
+  100% { border-color: #2e2e34; box-shadow: 0 0 0 1px #2e2e34; }
+  89% { border-color: #6b6b73; box-shadow: -2px 0 0 #6b6b73, 2px 0 0 #c9c9cf; }
+  91% { border-color: #2e2e34; box-shadow: 0 0 0 1px #2e2e34; }
+}
+.animate-edge-flicker {
+  animation: edge-flicker 7s steps(1) infinite;
+}
+
+@keyframes border-pulse {
+  0%,
+  100% { opacity: 0.35; }
+  50% { opacity: 1; }
+}
+.animate-border-pulse {
+  animation: border-pulse 2.8s steps(2) infinite;
+}
+
+@keyframes rule-draw-full {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+.group:hover .group-hover\:animate-rule-draw-full {
+  animation: rule-draw-full 180ms steps(4) forwards;
+}
+
+/* Portrait RGB tear overlay */
+.portrait-glitch::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  mix-blend-mode: screen;
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: inset -3px 0 0 rgba(107, 107, 115, 0.45), inset 3px 0 0 rgba(201, 201, 207, 0.35);
+  animation: portrait-tear 6.5s steps(1) infinite;
+}
+@keyframes portrait-tear {
+  0%,
+  86%,
+  100% { opacity: 0; transform: none; }
+  87% { opacity: 0.55; transform: translate(-2px, 0); }
+  89% { opacity: 0.3; transform: translate(2px, 0); }
+  91% { opacity: 0; transform: none; }
+}
+
+/* --- BLACKOUT motion primitives ---------------------------------------
+   Mechanical, not organic: things draw, snap, tear, tick, sweep — never
+   ease-in-out, bounce, or fade. Respects prefers-reduced-motion below. */
+
+@keyframes type-in {
+  from { width: 0; }
+  to { width: 100%; }
+}
+.animate-type {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  vertical-align: bottom;
+  width: 0;
+  animation: type-in steps(var(--chars, 12)) forwards;
+  animation-duration: calc(80ms * var(--chars, 12));
+}
+
+@keyframes bracket-snap {
+  from { transform: translate(var(--dx, 0), var(--dy, 0)); }
+  to { transform: none; }
+}
+.animate-snap {
+  animation: bracket-snap 160ms cubic-bezier(0.2, 0.9, 0.2, 1) both;
+}
+
+@keyframes scan-sweep {
+  to { transform: translateY(var(--sweep-distance, 200px)); }
+}
+.animate-sweep {
+  animation: scan-sweep 2400ms linear infinite;
+}
+
+/* Chromatic tear — sparse idle glitch (headline) */
+@keyframes glitch-tear {
+  0%,
+  100% {
+    clip-path: inset(0 0 0 0);
+    transform: none;
+    text-shadow: none;
+  }
+  4% {
+    clip-path: inset(12% 0 68% 0);
+    transform: translate(-3px, 0);
+    text-shadow: 3px 0 #6b6b73, -3px 0 #c9c9cf;
+  }
+  6% {
+    clip-path: inset(48% 0 22% 0);
+    transform: translate(3px, 0);
+    text-shadow: -2px 0 #6b6b73, 2px 0 #c9c9cf;
+  }
+  8% {
+    clip-path: inset(0 0 0 0);
+    transform: none;
+    text-shadow: none;
+  }
+}
+.animate-glitch {
+  animation: glitch-tear 9s steps(1) infinite;
+}
+.animate-glitch-once {
+  animation: glitch-tear 720ms steps(1) both;
+}
+
+/* Hover glitch: fire once on pointer enter via .is-glitching */
+@keyframes glitch-hit {
+  0% {
+    transform: none;
+    text-shadow: none;
+  }
+  20% {
+    transform: translate(-3px, 1px);
+    text-shadow: 3px 0 #6b6b73, -3px 0 #c9c9cf;
+  }
+  40% {
+    transform: translate(3px, -1px);
+    text-shadow: -2px 0 #6b6b73, 2px 0 #ffffff;
+  }
+  60% {
+    transform: translate(-2px, 0);
+    text-shadow: 2px 0 #6b6b73, -2px 0 #c9c9cf;
+  }
+  100% {
+    transform: none;
+    text-shadow: none;
+  }
+}
+.is-glitching {
+  animation: glitch-hit 280ms steps(2) both;
+}
+
+/* Soft CRT scanlines across the page */
+.scanlines {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  opacity: 0.045;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 2px,
+    #000 2px,
+    #000 3px
+  );
+}
+
+/* Moving HUD scan beam */
+.scan-beam {
+  pointer-events: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #ffffff 40%, #c9c9cf 60%, transparent);
+  opacity: 0.35;
+  mix-blend-mode: screen;
+  animation: scan-sweep 2400ms linear infinite;
+}
+
+/* Static burst — brief noise flash */
+@keyframes static-burst {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.55;
+  }
+  25% {
+    opacity: 0.15;
+  }
+  40% {
+    opacity: 0.45;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.animate-static {
+  animation: static-burst 420ms steps(4) both;
+}
+
+/* Access bar caret */
+@keyframes access-fill {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+.animate-access-fill {
+  animation: access-fill 900ms steps(18) forwards;
+}
+
+/* Project / section reveal — hard snap in from offset */
+@keyframes hard-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.animate-hard-in {
+  animation: hard-in 200ms steps(4) both;
+}
+
+/* Nav link underline draw */
+@keyframes rule-draw {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+.nav-link {
+  position: relative;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  height: 1px;
+  background: #ffffff;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: none;
+}
+.nav-link:hover::after,
+.nav-link:focus-visible::after {
+  animation: rule-draw 160ms steps(4) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-type,
+  .animate-snap,
+  .animate-sweep,
+  .animate-caret-blink,
+  .animate-glitch,
+  .animate-glitch-once,
+  .is-glitching,
+  .animate-static,
+  .animate-access-fill,
+  .animate-hard-in,
+  .scan-beam,
+  .animate-signal,
+  .animate-flicker,
+  .animate-edge-flicker,
+  .animate-border-pulse,
+  .site-texture-live::before,
+  .portrait-glitch::after,
+  .nav-link:hover::after,
+  .nav-link:focus-visible::after {
+    animation: none !important;
+    width: 100% !important;
+    transform: none !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+    clip-path: none !important;
+  }
+  .scanlines {
+    display: none;
+  }
+}

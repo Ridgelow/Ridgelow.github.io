@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Build the static site and publish it to the main branch (GitHub Pages).
 set -euo pipefail
-ROOT="$(cd "$(dirname "$0")" && pwd)"
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
 npm run build

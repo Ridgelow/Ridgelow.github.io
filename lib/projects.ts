@@ -18,31 +18,6 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    slug: "aggieinsight",
-    name: "AggieInsight",
-    award: "1st Place Overall",
-    event: "AWS × CMIS AI Hackathon",
-    oneLiner:
-      "Interview intelligence — company URLs and docs become strategy-first briefs in minutes.",
-    description:
-      "AggieInsight turns company URLs, topic signals, and supporting documents into dual interview packets: a strategy brief for the interviewer and a prep packet for the interviewee. A Next.js front end drives topic scanning and brief generation; AWS Lambda orchestrates Amazon Textract for PDF/image extraction and Amazon Bedrock (Claude) for structured reasoning — surfacing market patterns, leadership trade-offs, role-specific pressures, and high-impact questions, with section copy and PDF export.",
-    stack: [
-      "Next.js",
-      "TypeScript",
-      "AWS Lambda",
-      "Amazon Bedrock",
-      "Amazon Textract",
-      "S3",
-      "DynamoDB",
-    ],
-    year: "2026",
-    liveUrl: "https://aws-hackathon-ten.vercel.app",
-    liveLabel: "LIVE",
-    sourceUrl: "#",
-    image: "/projects/aggieinsight.png",
-    imageAlt: "AggieInsight interview intelligence dashboard",
-  },
-  {
     slug: "oversight",
     name: "Oversight",
     award: "Best Consumer Hack",
@@ -66,23 +41,6 @@ export const projects: Project[] = [
     sourceUrl: "https://github.com/dilzafer/oversightusa",
     image: "/projects/oversight.png",
     imageAlt: "Oversight democracy transparency dashboard",
-  },
-  {
-    slug: "pawbridge",
-    name: "PawBridge",
-    award: "2nd Place Overall",
-    event: "Product@TAMU Ideathon",
-    oneLiner:
-      "AI pet health for the uninsured — triage, affordable clinics, and care records.",
-    description:
-      "PawBridge is an AI-powered pet health concept for the 96% of owners without insurance. Validated with veterinarian interviews, the Figma prototype covers digital pet health profiles, LLM-based symptom triage (guidance, not diagnosis), and an affordability hub designed around Maps-powered clinic discovery, med price comparison, and diet recommendations — including exotic pets. Product@TAMU Ideathon Spring 2026, 2nd place.",
-    stack: ["Figma", "Product Design", "LLM Triage", "Google Maps API", "UX Research"],
-    year: "2026",
-    liveUrl: "https://review-rapid-35282328.figma.site",
-    liveLabel: "PROTOTYPE",
-    sourceUrl: "#",
-    image: "/projects/pawbridge.png",
-    imageAlt: "PawBridge Figma prototype — home, AI triage, and find care",
   },
   {
     slug: "obsession",
@@ -148,6 +106,48 @@ export const projects: Project[] = [
     sourceUrl: "https://github.com/Ridgelow/aggie-ewop-website",
     image: "/projects/aggie-ewop.jpg",
     imageAlt: "Aggie EWOP homepage — Empowering women out of prison",
+  },
+  {
+    slug: "aggieinsight",
+    name: "AggieInsight",
+    award: "1st Place Overall",
+    event: "AWS × CMIS AI Hackathon",
+    oneLiner:
+      "Interview intelligence — company URLs and docs become strategy-first briefs in minutes.",
+    description:
+      "AggieInsight turns company URLs, topic signals, and supporting documents into dual interview packets: a strategy brief for the interviewer and a prep packet for the interviewee. A Next.js front end drives topic scanning and brief generation; AWS Lambda orchestrates Amazon Textract for PDF/image extraction and Amazon Bedrock (Claude) for structured reasoning — surfacing market patterns, leadership trade-offs, role-specific pressures, and high-impact questions, with section copy and PDF export.",
+    stack: [
+      "Next.js",
+      "TypeScript",
+      "AWS Lambda",
+      "Amazon Bedrock",
+      "Amazon Textract",
+      "S3",
+      "DynamoDB",
+    ],
+    year: "2026",
+    liveUrl: "https://aws-hackathon-ten.vercel.app",
+    liveLabel: "LIVE",
+    sourceUrl: "#",
+    image: "/projects/aggieinsight.png",
+    imageAlt: "AggieInsight interview intelligence dashboard",
+  },
+  {
+    slug: "pawbridge",
+    name: "PawBridge",
+    award: "2nd Place Overall",
+    event: "Product@TAMU Ideathon",
+    oneLiner:
+      "AI pet health for the uninsured — triage, affordable clinics, and care records.",
+    description:
+      "PawBridge is an AI-powered pet health concept for the 96% of owners without insurance. Validated with veterinarian interviews, the Figma prototype covers digital pet health profiles, LLM-based symptom triage (guidance, not diagnosis), and an affordability hub designed around Maps-powered clinic discovery, med price comparison, and diet recommendations — including exotic pets. Product@TAMU Ideathon Spring 2026, 2nd place.",
+    stack: ["Figma", "Product Design", "LLM Triage", "Google Maps API", "UX Research"],
+    year: "2026",
+    liveUrl: "https://review-rapid-35282328.figma.site",
+    liveLabel: "PROTOTYPE",
+    sourceUrl: "#",
+    image: "/projects/pawbridge.png",
+    imageAlt: "PawBridge Figma prototype — home, AI triage, and find care",
   },
 ];
 

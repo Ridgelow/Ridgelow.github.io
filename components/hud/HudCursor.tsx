@@ -77,7 +77,7 @@ export default function HudCursor() {
   if (!on) return null;
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-[80]" aria-hidden>
+    <div id="hud-cursor" className="pointer-events-none fixed inset-0 z-[80]" aria-hidden>
       <div
         ref={trailEl}
         className="absolute h-1 w-1 bg-bo-ghost/50"

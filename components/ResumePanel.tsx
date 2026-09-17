@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 
 type Props = {
   open: boolean;
@@ -8,6 +9,12 @@ type Props = {
 };
 
 export default function ResumePanel({ open, onClose }: Props) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
@@ -15,18 +22,20 @@ export default function ResumePanel({ open, onClose }: Props) {
     };
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    document.documentElement.classList.add("resume-open");
     window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = prev;
+      document.documentElement.classList.remove("resume-open");
       window.removeEventListener("keydown", onKey);
     };
   }, [open, onClose]);
 
-  if (!open) return null;
+  if (!open || !mounted) return null;
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 z-[70] flex items-end justify-center sm:items-center"
+      className="fixed inset-0 z-[200] flex items-end justify-center sm:items-center"
       style={{
         paddingTop: "max(0.75rem, env(safe-area-inset-top))",
         paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))",
@@ -39,7 +48,7 @@ export default function ResumePanel({ open, onClose }: Props) {
     >
       <button
         type="button"
-        className="absolute inset-0 bg-bo-black/85"
+        className="absolute inset-0 bg-bo-black/90"
         aria-label="Close resume panel"
         onClick={onClose}
       />
@@ -48,7 +57,6 @@ export default function ResumePanel({ open, onClose }: Props) {
         className="relative z-10 flex w-full max-w-4xl flex-col overflow-hidden border border-bo-rule bg-bo-coal shadow-edge"
         style={{ maxHeight: "calc(100dvh - 1.5rem)" }}
       >
-        {/* Always-visible action bar */}
         <div className="sticky top-0 z-20 flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-bo-rule bg-bo-coal px-3 py-3 sm:px-5">
           <span className="font-mono text-xs text-bo-white sm:text-sm">$ view resume.pdf</span>
           <div className="flex items-center gap-2">
@@ -88,6 +96,7 @@ export default function ResumePanel({ open, onClose }: Props) {
           </a>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

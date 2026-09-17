@@ -82,6 +82,15 @@ html.hud-cursor * {
   cursor: none !important;
 }
 
+/* Hide floating HUD cursor while resume panel is open */
+html.resume-open #hud-cursor {
+  display: none !important;
+}
+html.resume-open,
+html.resume-open * {
+  cursor: auto !important;
+}
+
 .magnetic-card {
   transform-style: preserve-3d;
   transition: transform 80ms linear;

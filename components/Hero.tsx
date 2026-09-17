@@ -51,10 +51,13 @@ export default function Hero() {
         )}
 
         {showTitle && (
-          <div className="mt-6 animate-hard-in">
+          <div className="mt-6 flex flex-col gap-3 animate-hard-in">
             <h1 className="font-sans text-3xl font-medium leading-tight tracking-tight text-bo-white animate-glitch md:text-[40px] md:leading-[1.15]">
-              Building full-stack and AI products that ship.
+              Hey, I&apos;m Hasnain!
             </h1>
+            <p className="max-w-2xl font-sans text-lg leading-snug text-bo-smoke md:text-xl">
+              Building full-stack and AI products that ship.
+            </p>
           </div>
         )}
       </div>

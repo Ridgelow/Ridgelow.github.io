@@ -17,7 +17,7 @@ export type Project = {
 };
 
 export const projects: Project[] = [
-  {
+{
     slug: "oversight",
     name: "Oversight",
     award: "Best Consumer Hack",
@@ -42,7 +42,47 @@ export const projects: Project[] = [
     image: "/projects/oversight.png",
     imageAlt: "Oversight democracy transparency dashboard",
   },
-  {
+{
+    slug: "nextcreator",
+    name: "NextCreator",
+    award: "1k+ creators reached",
+    oneLiner:
+      "Creator marketplace and learning platform — courses, coaching, and subscriptions.",
+    description:
+      "NextCreator helps creators learn, coach, and monetize. The product pairs a Next.js app with an Express API: Clerk auth, MongoDB data, Stripe Connect payouts, Calendly booking, AWS S3 media, and real-time chat over Socket.io. Creators can publish courses, offer coaching, and sell subscription access to templates and services.",
+    stack: [
+      "Next.js",
+      "TypeScript",
+      "Express",
+      "MongoDB",
+      "Stripe",
+      "Clerk",
+      "AWS S3",
+    ],
+    year: "2025",
+    liveUrl: "https://nextcreatorlab.com",
+    liveLabel: "LIVE",
+    sourceUrl: "https://github.com/KevZ3742/NextCreator",
+    image: "/projects/nextcreator.png",
+    imageAlt: "NextCreator landing page with creator templates",
+  },
+{
+    slug: "aggie-ewop",
+    name: "Aggie EWOP",
+    award: "50+ chapter members",
+    oneLiner:
+      "Nonprofit chapter site for Empowering Women Out of Prison at Texas A&M.",
+    description:
+      "A fast, mostly-static Astro + Tailwind site for Aggie EWOP (Texas A&M’s Empowering Women Out of Prison chapter). Content lives in typed data files so officers can update team, pillars, meetings, and links without touching layout code — clear information architecture, accessible pages, and a path for visitors to learn and get involved.",
+    stack: ["Astro", "TypeScript", "Tailwind CSS"],
+    year: "2026",
+    liveUrl: "https://aggieewop.hasnain8811.workers.dev",
+    liveLabel: "LIVE",
+    sourceUrl: "https://github.com/Ridgelow/aggie-ewop-website",
+    image: "/projects/aggie-ewop.jpg",
+    imageAlt: "Aggie EWOP homepage — Empowering women out of prison",
+  },
+{
     slug: "obsession",
     name: "Obsession",
     award: "Persona Verification Challenge",
@@ -67,47 +107,7 @@ export const projects: Project[] = [
     image: "/projects/obsession.png",
     imageAlt: "Obsession app screens from Devpost — practice home, session, and Persona verify",
   },
-  {
-    slug: "nextcreator",
-    name: "NextCreator",
-    award: "1k+ creators reached",
-    oneLiner:
-      "Creator marketplace and learning platform — courses, coaching, and subscriptions.",
-    description:
-      "NextCreator helps creators learn, coach, and monetize. The product pairs a Next.js app with an Express API: Clerk auth, MongoDB data, Stripe Connect payouts, Calendly booking, AWS S3 media, and real-time chat over Socket.io. Creators can publish courses, offer coaching, and sell subscription access to templates and services.",
-    stack: [
-      "Next.js",
-      "TypeScript",
-      "Express",
-      "MongoDB",
-      "Stripe",
-      "Clerk",
-      "AWS S3",
-    ],
-    year: "2025",
-    liveUrl: "https://nextcreatorlab.com",
-    liveLabel: "LIVE",
-    sourceUrl: "https://github.com/KevZ3742/NextCreator",
-    image: "/projects/nextcreator.png",
-    imageAlt: "NextCreator landing page with creator templates",
-  },
-  {
-    slug: "aggie-ewop",
-    name: "Aggie EWOP",
-    award: "50+ chapter members",
-    oneLiner:
-      "Nonprofit chapter site for Empowering Women Out of Prison at Texas A&M.",
-    description:
-      "A fast, mostly-static Astro + Tailwind site for Aggie EWOP (Texas A&M’s Empowering Women Out of Prison chapter). Content lives in typed data files so officers can update team, pillars, meetings, and links without touching layout code — clear information architecture, accessible pages, and a path for visitors to learn and get involved.",
-    stack: ["Astro", "TypeScript", "Tailwind CSS"],
-    year: "2026",
-    liveUrl: "https://aggieewop.hasnain8811.workers.dev",
-    liveLabel: "LIVE",
-    sourceUrl: "https://github.com/Ridgelow/aggie-ewop-website",
-    image: "/projects/aggie-ewop.jpg",
-    imageAlt: "Aggie EWOP homepage — Empowering women out of prison",
-  },
-  {
+{
     slug: "aggieinsight",
     name: "AggieInsight",
     award: "1st Place Overall",
@@ -132,7 +132,7 @@ export const projects: Project[] = [
     image: "/projects/aggieinsight.png",
     imageAlt: "AggieInsight interview intelligence dashboard",
   },
-  {
+{
     slug: "pawbridge",
     name: "PawBridge",
     award: "2nd Place Overall",

@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
 type Props = {
   open: boolean;
   onClose: () => void;
 };
+
+const PDF = "/resume.pdf";
 
 export default function ResumePanel({ open, onClose }: Props) {
   const [mounted, setMounted] = useState(false);
@@ -40,22 +42,6 @@ export default function ResumePanel({ open, onClose }: Props) {
     };
   }, [open, onClose]);
 
-  const pdfSrc = useMemo(() => {
-    if (typeof window === "undefined") return "/resume.pdf";
-    // Mobile browsers often ignore FitH and open PDFs huge in iframes.
-    // Google's embedded viewer scales to width when the PDF is publicly reachable.
-    if (isMobile) {
-      const host = window.location.hostname;
-      const isLocal = host === "localhost" || host === "127.0.0.1";
-      if (isLocal) {
-        return "/resume.pdf#toolbar=0&navpanes=0&view=FitW";
-      }
-      const absolute = `${window.location.origin}/resume.pdf`;
-      return `https://docs.google.com/gview?embedded=1&url=${encodeURIComponent(absolute)}`;
-    }
-    return "/resume.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH";
-  }, [isMobile]);
-
   if (!open || !mounted) return null;
 
   return createPortal(
@@ -78,22 +64,12 @@ export default function ResumePanel({ open, onClose }: Props) {
         onClick={onClose}
       />
 
-      <div
-        className="relative z-10 flex h-[100dvh] w-full max-w-4xl flex-col overflow-hidden border-0 bg-bo-coal sm:h-[min(92dvh,900px)] sm:border sm:border-bo-rule"
-      >
+      <div className="relative z-10 flex h-[100dvh] w-full max-w-4xl flex-col overflow-hidden border-0 bg-bo-coal sm:h-[min(92dvh,900px)] sm:border sm:border-bo-rule">
         <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-bo-rule bg-bo-coal px-3 py-3 sm:px-5">
           <span className="font-mono text-xs text-bo-white sm:text-sm">$ view resume.pdf</span>
           <div className="flex items-center gap-2">
             <a
-              href="/resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="border border-bo-rule px-3 py-2 font-mono text-xs tracking-[.12em] text-bo-chalk hover:border-bo-white hover:text-bo-white sm:hidden"
-            >
-              Open ↗
-            </a>
-            <a
-              href="/resume.pdf"
+              href={PDF}
               download="Hasnain_Rizvi_Resume.pdf"
               className="border border-bo-white bg-bo-white px-3 py-2 font-mono text-xs tracking-[.12em] text-bo-black hover:bg-bo-chalk"
             >
@@ -110,19 +86,49 @@ export default function ResumePanel({ open, onClose }: Props) {
         </div>
 
         <div className="relative min-h-0 flex-1 overflow-hidden bg-bo-ash">
-          <iframe
-            key={pdfSrc}
-            src={pdfSrc}
-            title="Resume PDF"
-            className="h-full w-full border-0"
-          />
+          {isMobile ? (
+            // Safari / mobile Chromium blank or black-out PDF iframes.
+            // Open natively instead — Safari's PDF viewer works.
+            <div className="flex h-full flex-col items-center justify-center gap-6 px-6 text-center">
+              <div className="flex flex-col gap-2">
+                <span className="font-mono text-xs tracking-[.14em] text-bo-steel">
+                  // RESUME
+                </span>
+                <p className="max-w-xs font-mono text-sm leading-relaxed text-bo-chalk">
+                  Mobile browsers can&apos;t embed PDFs here. Open it in Safari&apos;s
+                  native viewer.
+                </p>
+              </div>
+              <a
+                href={PDF}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="border border-bo-white bg-bo-white px-6 py-4 font-mono text-xs tracking-[.14em] text-bo-black"
+              >
+                Open resume.pdf →
+              </a>
+              <a
+                href={PDF}
+                download="Hasnain_Rizvi_Resume.pdf"
+                className="font-mono text-xs tracking-[.12em] text-bo-smoke underline"
+              >
+                or download ↓
+              </a>
+            </div>
+          ) : (
+            <iframe
+              src={`${PDF}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
+              title="Resume PDF"
+              className="h-full w-full border-0 bg-white"
+            />
+          )}
         </div>
 
         <div className="flex shrink-0 items-center justify-between gap-3 border-t border-bo-rule bg-bo-coal px-3 py-3 sm:px-5">
           <span className="hidden font-mono text-xs text-bo-steel sm:inline">esc to close</span>
-          <span className="font-mono text-xs text-bo-steel sm:hidden">pinch to zoom · open for native view</span>
+          <span className="font-mono text-xs text-bo-steel sm:hidden">opens in Safari PDF viewer</span>
           <a
-            href="/resume.pdf"
+            href={PDF}
             download="Hasnain_Rizvi_Resume.pdf"
             className="font-mono text-xs tracking-[.12em] text-bo-smoke underline hover:text-bo-white"
           >

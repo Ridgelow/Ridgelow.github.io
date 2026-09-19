@@ -20,7 +20,7 @@ export const posts: Post[] = [
     date: "2026-09-18",
     dateISO: "2026-09-18",
     excerpt: "typography & color scheme",
-    body: `back in summer 2017, the og watch dogs was free with games with gold on xbox one, and that summer i was hooked. big fan of the first two games, so i pulled the look: blackout ui, greyscale until you hover. fonts are hacked for the wordmark feel, pixel operator mono for the $ noise, and barlow for body. lastly, the hr logo is inspired by the in-game faction badge.`,
+    body: `back in june 2017, the og watch dogs was free with games with gold on xbox one, and that summer i was hooked. big fan of the first two games, so i pulled the look: blackout ui, greyscale until you hover. fonts are hacked for the wordmark feel, pixel operator mono for the $ noise, and barlow for body. lastly, the hr logo is inspired by the in-game faction badge.`,
     image: "/hr-mark-white.png",
     imageAlt: "hr logo",
     imageShape: "square",

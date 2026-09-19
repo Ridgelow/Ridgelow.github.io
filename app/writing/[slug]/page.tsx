@@ -39,16 +39,36 @@ export default function WritingPostPage({ params }: { params: { slug: string } }
 
         <Reveal>
           <article className="flex flex-col gap-8 border-b border-bo-rule px-6 py-10 lg:px-10">
-            <p className="max-w-2xl text-lg leading-relaxed text-bo-chalk">{post.body}</p>
+            <div className="flex max-w-2xl flex-col gap-5">
+              {post.body.split(/\n\n+/).map((para, i) => (
+                <p key={i} className="text-lg leading-relaxed text-bo-chalk">
+                  {para}
+                </p>
+              ))}
+            </div>
 
             {post.image && (
-              <div className="relative aspect-[16/10] w-full max-w-3xl overflow-hidden border border-bo-rule bg-bo-coal">
+              <div
+                className={
+                  post.imageShape === "square"
+                    ? "relative aspect-square w-full max-w-md overflow-hidden border border-bo-rule bg-bo-void"
+                    : "relative aspect-[16/10] w-full max-w-3xl overflow-hidden border border-bo-rule bg-bo-coal"
+                }
+              >
                 <Image
                   src={post.image}
                   alt={post.imageAlt || post.title}
                   fill
-                  className="object-cover object-top"
-                  sizes="(max-width: 1100px) 100vw, 768px"
+                  className={
+                    post.imageShape === "square"
+                      ? "object-contain"
+                      : "object-cover object-top"
+                  }
+                  sizes={
+                    post.imageShape === "square"
+                      ? "(max-width: 1100px) 100vw, 448px"
+                      : "(max-width: 1100px) 100vw, 768px"
+                  }
                   priority
                 />
               </div>
